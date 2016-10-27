@@ -5,7 +5,7 @@ namespace oangia\Api\Middleware;
 use Closure;
 use Log;
 
-class LogRequestsLogRequests
+class LogRequests
 {
     /**
      * Handle an incoming request.

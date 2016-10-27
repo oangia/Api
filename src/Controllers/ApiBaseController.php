@@ -13,7 +13,7 @@ abstract class ApiBaseController extends Controller
 
     public function __construct(Request $request)
     {
-        $this->middleware([ 'wants.json', 'log.requests' ], [ 'except' => [ 'getToken', 'streamArchive' ] ]);
+        $this->middleware([ 'wants.json', 'log.requests' ], [ 'except' => config('api.except') ]);
 
         $this->_curUser = Auth::guard('api')->user();
     }
@@ -26,7 +26,7 @@ abstract class ApiBaseController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function responseSuccess($data = [], $code = 200, $additional = null, $message = 'OK')
+    public function responseSuccess($data = [], $message = 'OK', $code = 200, $additional = null)
     {
         $key = (is_array($data) || ($data instanceof Collection))  ? 'objects' : 'object';
 

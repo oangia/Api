@@ -2,7 +2,6 @@
 
 namespace oangia\Api\Middleware;
 
-use App\Models\User;
 use Auth;
 use Closure;
 
@@ -27,8 +26,10 @@ class AuthenticateWithToken
             );
         }
 
-        $user = User::where('remember_token', str_replace('token=', '', $request->header('Authorization', null)))
-                        ->first();
+        $model = config('api.model');
+
+        $user = $model::where('remember_token', str_replace('token=', '', $request->header('Authorization', null)))
+                       ->first();
 
         if (! $user) {
             return response()->json(
@@ -40,17 +41,7 @@ class AuthenticateWithToken
             );
         }
 
-        if ($user->ban) {
-            return response()->json(
-                [
-                    'code'    => 403,
-                    'message' => 'Your account has been banned',
-                    'data'    => [],
-                ], 403
-            );
-        }
-
-        Auth::guard('api')->login($user);
+        Auth::guard('api')->setUser($user);
 
         return $next($request);
     }
