@@ -1,4 +1,4 @@
-Laravel Material
+Api
 =========
 
 Package provide some materials for api laravel 5
